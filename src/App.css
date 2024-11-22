@@ -56,15 +56,14 @@ button:hover {
   gap: 10px;
 }
 
-/* Novo estilo para as listas de tarefas lado a lado */
 .lista-tarefas-container {
   display: flex;
-  justify-content: space-between; /* Distribui o espaço entre as duas colunas */
-  gap: 20px; /* Espaço entre as colunas */
+  justify-content: space-between; 
+  gap: 20px;
 }
 
 .lista-tarefas {
-  width: 48%; /* Cada lista ocupa 48% da largura do container */
+  width: 48%; 
   padding-bottom: 20px;
   border-bottom: 1px solid #555;
 }
@@ -121,12 +120,11 @@ select {
   width: 100%;
 }
 
-/* Estilo para a notificação */
 .notification {
   position: fixed;
   top: 20px;
   right: 20px;
-  background-color: #4caf50; /* Verde para sucesso */
+  background-color: #4caf50; 
   color: white;
   padding: 10px 20px;
   border-radius: 5px;
@@ -137,18 +135,17 @@ select {
 }
 
 .notification.error {
-  background-color: #f44336; /* Vermelho para erro */
+  background-color: #f44336; 
 }
 
 .notification.success {
-  background-color: #4caf50; /* Verde para sucesso */
+  background-color: #4caf50; 
 }
 
 .notification.warning {
-  background-color: #ff9800; /* Laranja para warning */
+  background-color: #ff9800; 
 }
 
-/* Estilo de transição suave para a notificação desaparecer */
 .notification.fade-out {
   opacity: 0;
 }
