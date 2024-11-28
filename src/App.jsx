@@ -27,20 +27,6 @@ function App() {
     fetchTarefas(); // Executa a função para buscar as tarefas
   }, []);
 
-  // Função que adiciona uma nova tarefa
-  const listarTarefa = async (texto) => {
-    try {
-      const resposta = await api.post('/todos', { title: texto, is_completed: false }); // Envia uma requisição para a API
-      if (resposta.status === 201) {
-        setTarefas((prevTarefas) => [...prevTarefas, resposta.data]); // Atualiza a lista com a nova tarefa
-        setNotificacao({ type: 'success', message: 'Tarefa criada com sucesso!' }); // Exibe notificação de sucesso
-      }
-    } catch (error) {
-      console.error('Erro ao criar tarefa:', error.message); // Exibe erro no console
-      setNotificacao({ type: 'error', message: error.message || 'Erro ao criar tarefa.' }); // Exibe notificação de erro
-    }
-  };
-
   // Função que exclui uma tarefa
   const excluirTarefa = async (id) => {
     setCarregando(true);
@@ -141,12 +127,11 @@ function App() {
                 excluirTarefa={excluirTarefa}
                 concluirTarefa={concluirTarefa}
                 editarTarefa={editarTarefa}
-                atualizarTarefaLocal={atualizarTarefa}
+                atualizarTarefa={atualizarTarefa}
               />
             ))
           )}
         </div>
-
 
         {tarefasConcluidas.length > 0 && (
           <div className="lista-tarefas">
@@ -158,15 +143,14 @@ function App() {
                 excluirTarefa={excluirTarefa}
                 concluirTarefa={concluirTarefa}
                 editarTarefa={editarTarefa}
-                atualizarTarefaLocal={atualizarTarefa}
+                atualizarTarefa={atualizarTarefa}
               />
             ))}
           </div>
         )}
       </div>
 
-
-      <CriarTarefa listarTarefa={listarTarefa} />
+      <CriarTarefa setTarefas={setTarefas} setNotificacao={setNotificacao} />
     </div>
   );
 }
