@@ -1,32 +1,39 @@
 import { useState } from 'react';
+import axios from 'axios';
 
-function CriarTarefa({ listarTarefa }) {
+function CriarTarefa({ setTarefas, setNotificacao }) {  // Passando as funções como props
     const [valor, setValor] = useState('');
     const [carregando, setCarregando] = useState(false);
     const [error, setError] = useState(null); // Estado de erro
 
     const submit = async (evento) => {
-        if (!valor.trim()) return; // Não faz nada caso o texto estiver vazio
+        evento.preventDefault(); // Previne o comportamento padrão do formulário
+
+        if (!valor.trim()) return; // Não faz nada caso o texto esteja vazio
 
         setCarregando(true); // Inicia o carregamento
         setError(null); // Limpa quaisquer mensagens de erro
 
         try {
-            const resposta = await fetch('http://localhost:3000/todos', {
-                method: 'POST',
+            const resposta = await axios.post('http://localhost:3000/todos', {
+                title: valor,
+                is_completed: false
+            }, {
                 headers: {
                     'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ title: valor, is_completed: false }),
+                }
             });
 
-            if (!resposta.ok) throw new Error('Erro ao criar tarefa');
-
-            const novaTarefa = await response.json();
-            listarTarefa(novaTarefa); // Atualiza a lista de tarefas no App.js
-            setValor(''); // Limpa o campo de input
+            if (resposta.status === 201) {
+                setTarefas((prevTarefas) => [...prevTarefas, resposta.data]); // Atualiza a lista com a nova tarefa
+                setNotificacao({ type: 'success', message: 'Tarefa criada com sucesso!' }); // Exibe notificação de sucesso
+                setValor(''); // Limpa o campo de input
+            } else {
+                throw new Error('Erro ao criar tarefa');
+            }
         } catch (erro) {
-            setError('Erro ao criar tarefa'); // Mostra o erro se houver
+            setError(erro.message || 'Erro ao criar tarefa'); // Mostra o erro se houver
+            setNotificacao({ type: 'error', message: erro.message || 'Erro ao criar tarefa.' }); // Exibe notificação de erro
         } finally {
             setCarregando(false); // Finaliza o carregamento
         }
@@ -52,7 +59,7 @@ function CriarTarefa({ listarTarefa }) {
                     {carregando ? 'Criando...' : 'Criar tarefa'}
                 </button>
             </form>
-            {error && <p className="error">{error}</p>} 
+            {error && <p className="error">{error}</p>}
         </div>
     );
 }
